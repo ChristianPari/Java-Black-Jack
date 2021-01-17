@@ -35,24 +35,27 @@ public class BlackJack {
     dealer.deal(players, 2);
     for (var player : players) {
       runTurn(player);
+      Console.clearScreen();
     }
     endRound();
   }
 
   private void runTurn(Player player) {
+    Console.getString("\n" + player.getName() + " press enter once you are ready...", "");
     while (true) {
       player.peek();
       boolean takeAnotherCard = player.stayOrHit(new String[] {
         "Stay",
         "Hit Me"
         });
+      System.out.println("\n".trim());
 
       if (takeAnotherCard) {
         Card newCard = dealer.giveCard();
         player.takeCard(newCard);
         if (player.getScore() > 21) {
           System.out.println(player.getName() + " BUSTED!");
-          player.clearPlayer();
+          player.clearHand();
           break;
         }
       } else {
@@ -75,6 +78,7 @@ public class BlackJack {
   }
 
   private List<Player> displayScoresAndGetWinners() {
+    // todo: currently trying to figure out why scores arent print all players ands scores
     String title = "\nSCORES";
     String scoresString = "";
 

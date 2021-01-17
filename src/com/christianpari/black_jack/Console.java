@@ -127,6 +127,5 @@ public class Console {
       System.out.println("\n");
       lines--;
     }
-    scanner.nextLine();
   }
 }

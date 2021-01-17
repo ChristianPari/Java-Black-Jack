@@ -26,17 +26,17 @@ public class Card {
 
       case 11:
         display += "JACK";
-        this.value = 10;
+//        this.value = 10;
         break;
 
       case 12:
         display += "QUEEN";
-        this.value = 10;
+//        this.value = 10;
         break;
 
       case 13:
         display += "KING";
-        this.value = 10;
+//        this.value = 10;
         break;
 
       default:
@@ -57,34 +57,4 @@ public class Card {
     }
   }
 
-  @Override
-  public String toString() {
-    String display = suit + "";
-    switch (value) {
-      case 0:
-        return "JOKER";
-
-        case 1:
-        display += "ACE";
-        break;
-
-      case 11:
-        display += "JACK";
-        break;
-
-      case 12:
-        display += "QUEEN";
-        break;
-
-      case 13:
-        display += "KING";
-        break;
-
-      default:
-        display += Integer.toString(value);
-    }
-
-    display += suit;
-    return display;
-  }
 }

@@ -1,13 +1,8 @@
 package com.christianpari.black_jack;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Player {
   private String name;
-  private List<Card> cards = new ArrayList<>();
+  private Hand hand;
   private int score = 0;
 
   public Player (String name) { this.name = name; }
@@ -15,11 +10,11 @@ public class Player {
   public void peek() {
     String display = name + "'s Cards: ";
 
-    for (var card : cards) {
+    for (var card : hand.getCards()) {
       display += card.getDisplay() + " ";
     }
 
-    System.out.println("\n" + display + "\n");
+    System.out.println(display + "\n");
   }
 
   public boolean stayOrHit(String[] choices) {
@@ -33,7 +28,7 @@ public class Player {
   }
 
   private void checkForAce() {
-    for (var card : cards) {
+    for (var card : hand.getCards()) {
       int cardValue = card.getValue();
       if (cardValue == 1 || cardValue == 11) {
         String[] choices = {"1", "11"};
@@ -43,17 +38,18 @@ public class Player {
         if (cardValue != Integer.parseInt(choices[choiceIdx])) {
           card.changeAceValue();
         }
+        System.out.println("\n".trim());
       }
     }
   }
 
   public void takeCard(Card card) {
-    cards.add(card);
+    hand.addCard(card);
     score += card.getValue();
   }
 
-  public void clearPlayer() {
-    cards = new ArrayList<>();
+  public void clearHand() {
+    hand.emptyHand();
     score = 0;
   }
 
