@@ -51,6 +51,12 @@ public class Card {
 
   public String getDisplay() { return display; }
 
+  public void changeAceValue() {
+    if (value == 1 || value == 11) {
+      value = (value == 1) ? 11 : 1;
+    }
+  }
+
   @Override
   public String toString() {
     String display = suit + "";

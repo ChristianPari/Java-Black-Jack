@@ -24,6 +24,23 @@ public class Console {
     return choice;
   }
 
+  public static int getChoice(
+    String query,
+    String[] choices
+  ) {
+    String display = query + "\n";
+    for (int count = 1; count <= choices.length; count++) {
+      display += "(" + count + ") " + choices[count - 1] + " ";
+    }
+    int choice = getInt(
+      display.trim(),
+      "Choice: ",
+      1,
+      choices.length
+    );
+    return choice;
+  }
+
   public static List<Integer> getListIntegers(
     String prompt,
     String inputStarter,
