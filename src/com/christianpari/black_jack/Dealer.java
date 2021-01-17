@@ -5,7 +5,7 @@ import java.util.List;
 public class Dealer {
   private final String DEALER = "Dealer";
   private Deck deck;
-  private Hand hand;
+  private Hand hand = new Hand();
   private int score;
 
   public void newDeck(Deck deck) { this.deck = deck; }
@@ -20,7 +20,7 @@ public class Dealer {
       for (int count = 1; count <= cardsPerPlayer; count++) {
         Card card = deck.draw();
 
-        if (playerCounter == 0) { // player 0 is the dealer
+        if (playerCounter == players.size()) { // player 0 is the dealer
           hand.addCard(card);
         } else {
           players.get(playerCounter).takeCard(card);

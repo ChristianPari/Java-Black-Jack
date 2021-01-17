@@ -5,19 +5,26 @@ import java.util.*;
 public class BlackJack {
   private List<Player> players = new ArrayList<>();
   private Dealer dealer = new Dealer();
+  private final int CARDS_PER_PLAYER = 2;
 
   public BlackJack (
-    int numOfPlayers,
     Deck deck
   ) {
-    addPlayers(numOfPlayers);
+    addPlayers();
     dealer.newDeck(deck);
   }
 
-  private void addPlayers(int numOfPlayers) {
+  private void addPlayers() {
+    int numOfPlayers = Console.getInt(
+      "How many players?",
+      "Number of Players: ",
+      1,
+      6
+    );
+
     for (int count = 0; count < numOfPlayers; count++) {
       String playerName = Console.getString(
-        "Player " + (count + 1) + "'s Name?",
+        "\nPlayer " + (count + 1) + "'s Name?",
         "Name: "
       );
       players.add(new Player(playerName));
@@ -32,7 +39,7 @@ public class BlackJack {
 
   private void runRound() {
     dealer.shuffle();
-    dealer.deal(players, 2);
+    dealer.deal(players, CARDS_PER_PLAYER);
     for (var player : players) {
       runTurn(player);
       Console.clearScreen();
@@ -48,20 +55,27 @@ public class BlackJack {
         "Stay",
         "Hit Me"
         });
-      System.out.println("\n".trim());
 
       if (takeAnotherCard) {
         Card newCard = dealer.giveCard();
         player.takeCard(newCard);
         if (player.getScore() > 21) {
-          System.out.println(player.getName() + " BUSTED!");
-          player.clearHand();
+          busted(player);
           break;
         }
       } else {
+        if (player.getScore() > 21) {
+          busted(player);
+        }
         break;
       }
     }
+  }
+
+  private void busted(Player player) {
+    System.out.println(player.getName() + " BUSTED!");
+    Console.getString("\nPress enter to end turn.","");
+    player.clearHand();
   }
 
   private void endRound() {
@@ -70,15 +84,21 @@ public class BlackJack {
 
   private void getWinner() {
     List<Player> winners = displayScoresAndGetWinners();
-    String output = (winners.size() > 1) ? "THE WINNERS ARE...\n" : "THE WINNER IS...";
+    String output = "";
+    if (winners.size() == 0) {
+      output = "THERE WERE NO WINNERS, DEALER TAKES POT!";
+    } else if (winners.size() == 1) {
+      output = "THE WINNER IS ";
+    } else {
+      output = "THE WINNERS ARE:";
+    }
     for (var player : winners) {
-      output += player.getName() + "\n";
+      output += "\n" + player.getName();
     }
     System.out.println(output);
   }
 
   private List<Player> displayScoresAndGetWinners() {
-    // todo: currently trying to figure out why scores arent print all players ands scores
     String title = "\nSCORES";
     String scoresString = "";
 
@@ -88,7 +108,7 @@ public class BlackJack {
     }
 
     List<Integer> scores = new ArrayList<>(playerScores.keySet());
-    Collections.reverse(scores);
+    scores.sort(Collections.reverseOrder());
 
     int highestScore = scores.get(0);
     List<Player> winners = new ArrayList<>();
@@ -101,7 +121,7 @@ public class BlackJack {
         winners.add(player);
       }
       String playerName = player.getName();
-      scoresString += playerName.toUpperCase() + " : " + score + "\n";
+      scoresString += playerName + " : " + score + "\n";
     }
 
     System.out.println(title + "\n" + scoresString.trim() + "\n");

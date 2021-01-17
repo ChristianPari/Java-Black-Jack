@@ -16,6 +16,7 @@ public class RiggedDeck implements Deck {
     suits.put("HEART", "\u2661");
     suits.put("CLUB", "\u2667");
     suits.put("DIAMOND", "\u2662");
+    suits.put("na", "");
   }
 
   @Override
@@ -29,7 +30,7 @@ public class RiggedDeck implements Deck {
     System.out.println("Card Value: 0 - 13");
     int value = sc.nextInt();
     sc.nextLine();
-    System.out.println("Card Suit: 'SPADE' 'HEART' 'CLUB' 'DIAMOND'");
+    System.out.println("Card Suit: 'SPADE' 'HEART' 'CLUB' 'DIAMOND' 'na'");
     String suit = sc.nextLine();
     return new Card(value, suits.get(suit));
   }

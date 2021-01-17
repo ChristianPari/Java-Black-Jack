@@ -7,6 +7,9 @@ public class Hand {
   private List<Card> cards = new ArrayList<>();
 
   public void addCard(Card card) {
+    if (card.getValue() > 10) {
+      card.setValue(10);
+    }
     cards.add(card);
   }
 

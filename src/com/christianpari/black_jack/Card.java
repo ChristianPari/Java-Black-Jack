@@ -26,17 +26,14 @@ public class Card {
 
       case 11:
         display += "JACK";
-//        this.value = 10;
         break;
 
       case 12:
         display += "QUEEN";
-//        this.value = 10;
         break;
 
       case 13:
         display += "KING";
-//        this.value = 10;
         break;
 
       default:
@@ -48,6 +45,9 @@ public class Card {
   }
 
   public int getValue() { return value; }
+  public void setValue(int value) {
+    this.value = value;
+  }
 
   public String getDisplay() { return display; }
 

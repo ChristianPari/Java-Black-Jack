@@ -2,7 +2,7 @@ package com.christianpari.black_jack;
 
 public class Player {
   private String name;
-  private Hand hand;
+  private Hand hand = new Hand();
   private int score = 0;
 
   public Player (String name) { this.name = name; }
@@ -19,6 +19,9 @@ public class Player {
 
   public boolean stayOrHit(String[] choices) {
     checkForAce();
+    if (score > 21) {
+      return false;
+    }
     String decision = choices[Console.getChoice(choices) - 1];
     if (decision.equalsIgnoreCase("stay")) {
       return false;
@@ -35,8 +38,11 @@ public class Player {
         int choiceIdx = Console.getChoice(
           "What would you like your ACE to be valued at?",
             choices) - 1;
-        if (cardValue != Integer.parseInt(choices[choiceIdx])) {
+        int choice = Integer.parseInt(choices[choiceIdx]);
+        if (cardValue != choice) {
           card.changeAceValue();
+          changeScore();
+
         }
         System.out.println("\n".trim());
       }
@@ -45,7 +51,14 @@ public class Player {
 
   public void takeCard(Card card) {
     hand.addCard(card);
-    score += card.getValue();
+    changeScore();
+  }
+
+  public void changeScore() {
+    score = 0;
+    for (var card : hand.getCards()) {
+     score += card.getValue();
+    }
   }
 
   public void clearHand() {
