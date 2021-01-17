@@ -5,27 +5,23 @@ import java.util.List;
 
 public class Player {
   private String name;
-  private List<Card> cards;
+  private List<Card> cards = new ArrayList<>();
   private int score = 0;
 
   public Player (String name) { this.name = name; }
 
   public void peek() {
-    String display = "Cards: ";
-
-    if (cards.size() == 0) {
-      display = "You currently have no cards";
-    }
+    String display = name + "'s Cards: ";
 
     for (var card : cards) {
-      display += card.toString() + " ";
+      display += card.getDisplay() + " ";
     }
 
-    System.out.println(display);
+    System.out.println("\n" + display + "\n");
   }
 
   public boolean stayOrHit(String[] choices) {
-    String decision = choices[Console.getChoice(choices)];
+    String decision = choices[Console.getChoice(choices) - 1];
     if (decision.equalsIgnoreCase("stay")) {
       return false;
     } else {

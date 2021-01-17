@@ -1,9 +1,9 @@
 package com.christianpari.black_jack;
 
-import java.util.List;
+import java.util.*;
 
 public class BlackJack {
-  private List<Player> players;
+  private List<Player> players = new ArrayList<>();
   private Dealer dealer = new Dealer();
 
   public BlackJack (
@@ -12,6 +12,16 @@ public class BlackJack {
   ) {
     addPlayers(numOfPlayers);
     dealer.newDeck(deck);
+  }
+
+  private void addPlayers(int numOfPlayers) {
+    for (int count = 0; count < numOfPlayers; count++) {
+      String playerName = Console.getString(
+        "Player " + (count + 1) + "'s Name?",
+        "Name: "
+      );
+      players.add(new Player(playerName));
+    }
   }
 
   public void runGame() {
@@ -41,7 +51,7 @@ public class BlackJack {
         Card newCard = dealer.giveCard();
         player.takeCard(newCard);
         if (player.getScore() > 21) {
-          System.out.println(player.getName() + "busted!");
+          System.out.println(player.getName() + " BUSTED!");
           player.clearPlayer();
           break;
         }
@@ -52,18 +62,47 @@ public class BlackJack {
   }
 
   private void endRound() {
-    // make a way for the scores to be displayed highest to lowest
-    // declare the winner of the round
+    getWinner();
   }
 
-  private void addPlayers(int numOfPlayers) {
-    for (int count = 0; count < numOfPlayers; count++) {
-      String playerName = Console.getString(
-        "Player " + (count + 1) + "'s Name?",
-        "Name: "
-      );
-      players.add(new Player(playerName));
+  private void getWinner() {
+    List<Player> winners = displayScoresAndGetWinners();
+    String output = (winners.size() > 1) ? "THE WINNERS ARE...\n" : "THE WINNER IS...";
+    for (var player : winners) {
+      output += player.getName() + "\n";
     }
+    System.out.println(output);
+  }
+
+  private List<Player> displayScoresAndGetWinners() {
+    String title = "\nSCORES";
+    String scoresString = "";
+
+    Map<Integer, Player> playerScores = new HashMap<>();
+    for (var player : players) {
+      playerScores.put(player.getScore(), player);
+    }
+
+    List<Integer> scores = new ArrayList<>(playerScores.keySet());
+    Collections.reverse(scores);
+
+    int highestScore = scores.get(0);
+    List<Player> winners = new ArrayList<>();
+    winners.add(playerScores.get(highestScore));
+
+    for (int count = 0; count < scores.size(); count++) {
+      int score = scores.get(count);
+      Player player = playerScores.get(score);
+      if (count > 0 && score == highestScore) {
+        winners.add(player);
+      }
+      String playerName = player.getName();
+      scoresString += playerName.toUpperCase() + " : " + score + "\n";
+    }
+
+    System.out.println(title + "\n" + scoresString.trim() + "\n");
+
+    return winners;
   }
 
 }
