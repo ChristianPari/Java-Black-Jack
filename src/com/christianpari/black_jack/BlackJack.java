@@ -10,8 +10,16 @@ public class BlackJack {
   public BlackJack (
     Deck deck
   ) {
+    welcome();
     addPlayers();
     dealer.newDeck(deck);
+  }
+
+  private void welcome() {
+    System.out.println("Welcome to BlackJack!\n" +
+      "Try not to go over 21 but remember, you have to have\n" +
+      "a higher score than the dealer to win your wager!\n" +
+      "Good Luck!\n");
   }
 
   private void addPlayers() {
