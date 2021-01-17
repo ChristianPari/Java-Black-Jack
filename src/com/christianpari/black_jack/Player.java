@@ -3,12 +3,49 @@ package com.christianpari.black_jack;
 public class Player {
   private String name;
   private Hand hand = new Hand();
+  private int money;
+  private int wager = 0;
   private int score = 0;
 
-  public Player (String name) { this.name = name; }
+  public Player (String name) {
+    this.name = name;
+    money = 10;
+  }
+
+  public Player (
+    String name,
+    int startingMoney
+  ) {
+    this.name = name;
+    money = startingMoney;
+  }
+
+  public int makeBet() {
+    wager = Console.getInt(
+      "\n" + name + " what would you like to bet?",
+      "Bet: ",
+      1,
+      money
+    );
+    return wager;
+  }
+
+  public void wagerLost() {
+    money -= wager;
+    wager = 0;
+  }
+
+  public void wagerWon() {
+    money += wager;
+    wager = 0;
+  }
+
+  public void tiedDealer() {
+    wager = 0;
+  }
 
   public void peek() {
-    String display = name + "'s Cards: ";
+    String display = "\n" + name + "'s Cards: ";
 
     for (var card : hand.getCards()) {
       display += card.getDisplay() + " ";
@@ -67,7 +104,8 @@ public class Player {
   }
 
   public String getName() { return name; }
-
+  public int getMoney() { return money; }
+  public int getWager() { return wager; }
   public int getScore() { return score; }
 
 }

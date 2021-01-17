@@ -16,11 +16,11 @@ public class Dealer {
     List<Player> players,
     int cardsPerPlayer
   ) {
-    for (int playerCounter = 0; playerCounter <= players.size(); playerCounter++) {
-      for (int count = 1; count <= cardsPerPlayer; count++) {
+    int totalPlayers = players.size();
+    for (int cardCount = 1; cardCount <= cardsPerPlayer; cardCount++) {
+      for (int playerCounter = 0; playerCounter <= totalPlayers; playerCounter++) {
         Card card = deck.draw();
-
-        if (playerCounter == players.size()) { // player 0 is the dealer
+        if (playerCounter == totalPlayers) {
           hand.addCard(card);
         } else {
           players.get(playerCounter).takeCard(card);
@@ -31,29 +31,48 @@ public class Dealer {
 
   public Card giveCard() { return deck.draw(); }
 
-  public boolean stayOrHit(String[] choices) {
+  public void display() {
+    String display = DEALER + "'s Cards: ";
+
+    for (var card : hand.getCards()) {
+      display += card.getDisplay() + " ";
+    }
+
+    System.out.println(display + "\n");
+  }
+
+  public boolean stayOrHit() {
     checkForAce();
-    String decision = choices[Console.getChoice(choices) - 1];
-    if (decision.equalsIgnoreCase("stay")) {
-      return false;
-    } else {
+    if (score < 17) {
       return true;
+    } else {
+      return false;
     }
   }
 
   private void checkForAce() {
     for (var card : hand.getCards()) {
       int cardValue = card.getValue();
-      if (cardValue == 1 || cardValue == 11) {
-        String[] choices = {"1", "11"};
-        int choiceIdx = Console.getChoice(
-          "What would you like your ACE to be valued at?",
-          choices) - 1;
-        if (cardValue != Integer.parseInt(choices[choiceIdx])) {
+      if (cardValue == 1) {
+        int aceAs11 = (score - 1) + 11;
+        if (aceAs11 >= 17 && aceAs11 <= 21) {
           card.changeAceValue();
+          changeScore();
         }
-        System.out.println("\n".trim());
       }
+    }
+  }
+
+  public void takeCard(Card card) {
+    hand.addCard(card);
+    changeScore();
+  }
+
+
+  public void changeScore() {
+    score = 0;
+    for (var card : hand.getCards()) {
+      score += card.getValue();
     }
   }
 

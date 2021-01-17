@@ -32,19 +32,35 @@ public class BlackJack {
   }
 
   public void runGame() {
-    // will make this run until players decide to stop
-      // thinking of implementing a betting system..
-    runRound();
+    while (players.size() > 1) {
+      runRound();
+    }
   }
 
   private void runRound() {
+    playersBet();
+    roundSetup();
+    runTurns();
+    dealersTurn();
+    endRound();
+  }
+
+  private void playersBet() {
+    for (var player : players) {
+      player.makeBet();
+    }
+  }
+
+  private void roundSetup() {
     dealer.shuffle();
     dealer.deal(players, CARDS_PER_PLAYER);
+  }
+
+  private void runTurns() {
     for (var player : players) {
       runTurn(player);
       Console.clearScreen();
     }
-    endRound();
   }
 
   private void runTurn(Player player) {
@@ -73,60 +89,119 @@ public class BlackJack {
   }
 
   private void busted(Player player) {
-    System.out.println(player.getName() + " BUSTED!");
+    String pName = player.getName();
+    player.peek();
+    System.out.println(pName + " BUSTED!\nYou lost your wager of $" + player.getWager());
     Console.getString("\nPress enter to end turn.","");
     player.clearHand();
+    player.wagerLost();
+  }
+
+  private void dealersTurn() {
+    while (true) {
+      dealer.display();
+      boolean takeAnother = dealer.stayOrHit();
+      if (takeAnother) {
+        Card newCard = dealer.giveCard();
+        dealer.takeCard(newCard);
+        if (dealer.getScore() > 21) {
+          System.out.println("Dealer BUSTED!\n");
+          dealer.display();
+          dealer.clearHand();
+          break;
+        }
+      } else {
+        if (dealer.getScore() > 21) {
+          System.out.println("Dealer BUSTED!\n");
+          dealer.display();
+          dealer.clearHand();
+        }
+        break;
+      }
+    }
   }
 
   private void endRound() {
     getWinner();
+    roundResults();
   }
 
   private void getWinner() {
     List<Player> winners = displayScoresAndGetWinners();
-    String output = "";
+    String output = "\n";
     if (winners.size() == 0) {
-      output = "THERE WERE NO WINNERS, DEALER TAKES POT!";
+      output += "THERE WERE NO WINNERS, DEALER TAKES POT!";
     } else if (winners.size() == 1) {
-      output = "THE WINNER IS ";
+      output += "THE WINNER IS ";
+      Player player = winners.get(0);
+      player.wagerWon();
+      output += player.getName();
     } else {
-      output = "THE WINNERS ARE:";
+      output += "THE WINNERS ARE:";
+      for (var player : winners) {
+        player.wagerWon();
+        output += "\n" + player.getName();
+      }
     }
-    for (var player : winners) {
-      output += "\n" + player.getName();
-    }
-    System.out.println(output);
+    System.out.println(output.trim());
   }
 
   private List<Player> displayScoresAndGetWinners() {
-    String title = "\nSCORES";
-    String scoresString = "";
-
-    Map<Integer, Player> playerScores = new HashMap<>();
+    Map<Integer, Player> remainingPlayers = new HashMap<>();
     for (var player : players) {
-      playerScores.put(player.getScore(), player);
+      if (player.getScore() != 0) {
+        remainingPlayers.put(player.getScore(), player);
+      }
     }
+    int dealerScore = dealer.getScore();
 
-    List<Integer> scores = new ArrayList<>(playerScores.keySet());
+    List<Integer> scores = new ArrayList<>(remainingPlayers.keySet());
     scores.sort(Collections.reverseOrder());
 
-    int highestScore = scores.get(0);
     List<Player> winners = new ArrayList<>();
-    winners.add(playerScores.get(highestScore));
 
-    for (int count = 0; count < scores.size(); count++) {
-      int score = scores.get(count);
-      Player player = playerScores.get(score);
-      if (count > 0 && score == highestScore) {
-        winners.add(player);
+    if (dealerScore == 0) {
+      winners.addAll(remainingPlayers.values());
+    } else {
+      for (int score : scores) {
+        Player player = remainingPlayers.get(score);
+        if (score > dealerScore) {
+          winners.add(player);
+        } else if (score == dealerScore) {
+          player.tiedDealer();
+        } else {
+          player.wagerLost();
+        }
       }
-      String playerName = player.getName();
-      scoresString += playerName + " : " + score + "\n";
+    }
+    return winners;
+  }
+
+  private void roundResults() {
+    String title = "\nROUND RESULTS\n";
+
+    String dealerInfo = "DEALER'S SCORE: " + dealer.getScore() + "\n";
+    dealer.clearHand();
+
+    String playersInfo = "";
+    List<Player> nextPlayers = new ArrayList<>();
+
+    for (var player : players) {
+      String playerInfo = "NAME: " + player.getName() +
+        " | SCORE: " + player.getScore() +
+        " | MONEY: " + player.getMoney() + "\n";
+
+      playersInfo += playerInfo;
+      player.clearHand();
+
+      if (player.getMoney() >= 1) {
+        nextPlayers.add(player);
+      }
     }
 
-    System.out.println(title + "\n" + scoresString.trim() + "\n");
+    players = nextPlayers;
 
-    return winners;
+    System.out.println(title + dealerInfo + playersInfo);
   }
 
 }
