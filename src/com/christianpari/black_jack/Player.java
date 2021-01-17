@@ -1,5 +1,8 @@
 package com.christianpari.black_jack;
 
+import com.christianpari.black_jack.dealer.deck_tools.Card;
+import com.christianpari.black_jack.dealer.deck_tools.Hand;
+
 public class Player {
   private String name;
   private Hand hand = new Hand();

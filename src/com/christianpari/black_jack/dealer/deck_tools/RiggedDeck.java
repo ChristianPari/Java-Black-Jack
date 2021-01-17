@@ -1,4 +1,4 @@
-package com.christianpari.black_jack;
+package com.christianpari.black_jack.dealer.deck_tools;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,7 @@
 package com.christianpari;
 
 import com.christianpari.black_jack.BlackJack;
-import com.christianpari.black_jack.RiggedDeck;
-import com.christianpari.black_jack.StandardDeck;
+import com.christianpari.black_jack.dealer.deck_tools.StandardDeck;
 
 public class Main {
 

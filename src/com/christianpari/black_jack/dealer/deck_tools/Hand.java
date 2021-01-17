@@ -1,4 +1,6 @@
-package com.christianpari.black_jack;
+package com.christianpari.black_jack.dealer.deck_tools;
+
+import com.christianpari.black_jack.dealer.deck_tools.Card;
 
 import java.util.ArrayList;
 import java.util.List;

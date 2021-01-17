@@ -1,4 +1,4 @@
-package com.christianpari.black_jack;
+package com.christianpari.black_jack.dealer.deck_tools;
 
 public class Card {
   private int value;
