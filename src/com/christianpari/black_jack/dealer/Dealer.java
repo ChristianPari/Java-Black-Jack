@@ -1,9 +1,9 @@
 package com.christianpari.black_jack.dealer;
 
-import com.christianpari.black_jack.dealer.deck_tools.Hand;
 import com.christianpari.black_jack.Player;
 import com.christianpari.black_jack.dealer.deck_tools.Card;
 import com.christianpari.black_jack.dealer.deck_tools.Deck;
+import com.christianpari.black_jack.dealer.deck_tools.Hand;
 
 import java.util.List;
 

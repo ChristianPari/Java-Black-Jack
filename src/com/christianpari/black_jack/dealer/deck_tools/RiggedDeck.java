@@ -1,5 +1,8 @@
 package com.christianpari.black_jack.dealer.deck_tools;
 
+import com.christianpari.black_jack.dealer.deck_tools.Card;
+import com.christianpari.black_jack.dealer.deck_tools.Deck;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;

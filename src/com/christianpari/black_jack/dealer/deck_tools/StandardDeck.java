@@ -1,5 +1,8 @@
 package com.christianpari.black_jack.dealer.deck_tools;
 
+import com.christianpari.black_jack.dealer.deck_tools.Card;
+import com.christianpari.black_jack.dealer.deck_tools.Deck;
+
 import java.util.*;
 
 public class StandardDeck implements Deck {
