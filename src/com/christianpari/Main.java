@@ -1,12 +1,11 @@
 package com.christianpari;
 
-import com.christianpari.black_jack.BlackJack;
-import com.christianpari.black_jack.dealer.deck_tools.StandardDeck;
+import com.christianpari.black_jack.game.BlackJack;
 
 public class Main {
 
   public static void main(String[] args) {
-    BlackJack game = new BlackJack(new StandardDeck());
-    game.runGame();
+    BlackJack game = new BlackJack();
+    game.play();
   }
 }
