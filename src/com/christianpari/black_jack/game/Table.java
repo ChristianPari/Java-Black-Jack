@@ -12,14 +12,14 @@ import java.util.List;
 
 public class Table {
   private Hand dealer = new Hand(new Dealer());
-  private Hand player = new Hand(new Player());
+//  private Hand player = new Hand(new Player());
   private List<Hand> players = new ArrayList<>();
   private int numOfPlayers = -1;
   private Deck deck = new Standard();
 
   public Deck getDeck() { return deck; }
   public Hand getDealer() { return dealer; }
-  public Hand getPlayer() { return player; }
+//  public Hand getPlayer() { return player; }
   public List<Hand> getPlayers() { return players; }
   public int getNumOfPlayers() { return numOfPlayers; }
 
